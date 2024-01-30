@@ -14,11 +14,10 @@ class Point:
 def BézierCurves3Point(points):
   t_points = list()
   x, y = list(map(lambda p: p.x, points)), list(map(lambda p: p.y, points))
-  for t in np.linspace(0, 1, num=10):
+  for t in np.linspace(0, 1, num=100):
     xt = BézierCurvesNPointFn(t, x)
     yt = BézierCurvesNPointFn(t, y)
     t_points.append(Point(xt, yt))
-    # print(f"{t} => [{xt}, {yt}]")
   return t_points
 
 def BézierCurves3PointFn(t: float, a) -> float:
@@ -29,12 +28,10 @@ def BézierCurves4PointFn(t: float, a) -> float:
 
 def BézierCurvesNPointFn(t: float, a) -> float:
   s = 0
-  n = len(a)
+  n = len(a)-1
   i = 0
   for ai in a:
-    st = math.comb(n, i) * ((1-t)**(n-i)) * (t**(i)) * ai
-    print(f"{st}")
-    s +=st
+    s+= math.comb(n, i) * ((1-t)**(n-i)) * (t**(i)) * ai
     i+=1
   return s
 
