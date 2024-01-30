@@ -13,8 +13,16 @@ class Point:
 def BézierCurves3Point(points):
   t_points = list()
   x, y = list(map(lambda p: p.x, points)), list(map(lambda p: p.y, points))
-  for t in range(x[0], x[len(x)]: 0.1):
-    print(t)
+  for t in np.linspace(0, 1, num=10000):
+    xt = BézierCurves3PointFn(t, x)
+    yt = BézierCurves3PointFn(t, y)
+    t_points.append(Point(xt, yt))
+    # print(f"{t} => [{xt}, {yt}]")
+  return t_points
+
+def BézierCurves3PointFn(t: float, a) -> float:
+  return ((1.0-t)**2)*a[0] + 2*(1.0-t)*t*a[1] + t*t*a[2]
+
 
 def main():
   f = open('v.json')
@@ -23,11 +31,14 @@ def main():
   for i in data:
     points.append(Point(float(i[0]), float(i[1])))
   f.close()
-  # x, y = list(map(lambda p: p.x, points)), list(map(lambda p: p.y, points))
-  BézierCurves3Point(points)
+  t_points = BézierCurves3Point(points)
+  x, y = list(map(lambda p: p.x, points)), list(map(lambda p: p.y, points))
+  xt, yt = list(map(lambda p: p.x, t_points)), list(map(lambda p: p.y, t_points))
   # print(x, y)
-  # plt.plot(x, y)
-  # plt.show()
+  plt.plot(x, y, label = "Anchor")
+  plt.plot(xt, yt, label = "Corve") 
+  plt.legend() 
+  plt.show()
 
 
 if __name__ == "__main__":
